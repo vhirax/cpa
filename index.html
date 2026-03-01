@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>STREAMING 18+ - Koleksi Video Eksklusif</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #0f0f0f;
+      color: #fff;
+    }
+
+    /* Header dengan gradient */
+    .header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a0a0a 100%);
+      padding: 30px 20px;
+      text-align: center;
+      border-bottom: 2px solid #ff3c5f;
+      box-shadow: 0 5px 20px rgba(255, 60, 95, 0.2);
+    }
+
+    .header h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(45deg, #ff3c5f, #ff8c5f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255, 60, 95, 0.5);
+    }
+
+    .header p {
+      color: #aaa;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    /* Navigasi dan search */
+    .nav-bar {
+      background: #1a1a1a;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+      backdrop-filter: blur(10px);
+      background: rgba(26, 26, 26, 0.95);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 50px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 15px;
+      border: 1px solid #444;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #ff3c5f;
+      background: #333;
+      box-shadow: 0 0 15px rgba(255, 60, 95, 0.3);
+    }
+
+    .search-box button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      background: #ff3c5f;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .search-box button:hover {
+      background: #ff1f45;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 60, 95, 0.4);
+    }
+
+    /* Filter dan kategori */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .category-btn {
+      padding: 8px 16px;
+      border: 1px solid #444;
+      border-radius: 50px;
+      background: transparent;
+      color: #ccc;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .category-btn:hover {
+      border-color: #ff3c5f;
+      color: #ff3c5f;
+    }
+
+    .category-btn.active {
+      background: #ff3c5f;
+      color: white;
+      border-color: #ff3c5f;
+    }
+
+    .sort-select {
+      padding: 8px 16px;
+      border: 1px solid #444;
+      border-radius: 50px;
+      background: #2a2a2a;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .sort-select:focus {
+      outline: none;
+      border-color: #ff3c5f;
+    }
+
+    /* Stats */
+    .stats-bar {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .result-count span {
+      color: #ff3c5f;
+      font-weight: bold;
+    }
+
+    /* Grid Video */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Card video dengan efek modern */
+    .video-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid #333;
+      position: relative;
+    }
+
+    .video-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 30px rgba(255, 60, 95, 0.3);
+      border-color: #ff3c5f;
+    }
+
+    .thumbnail-container {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
+    }
+
+    .video-card:hover .thumbnail {
+      transform: scale(1.15);
+    }
+
+    /* Badge kualitas */
+    .quality-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #ff3c5f;
+      color: white;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .duration {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      backdrop-filter: blur(2px);
+    }
+
+    .video-info {
+      padding: 15px;
+    }
+
+    .video-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 40px;
+    }
+
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #aaa;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .views {
+      color: #ff3c5f;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .category-tag {
+      background: #2a2a2a;
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: #ddd;
+      font-size: 10px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    /* Modal Pemutar Video */
+    .video-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.98);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-content {
+      position: relative;
+      width: 95%;
+      max-width: 1000px;
+      background: #1a1a1a;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(255, 60, 95, 0.3);
+      border: 1px solid #333;
+    }
+
+    .modal-header {
+      background: #2a2a2a;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ff3c5f;
+    }
+
+    .modal-header h3 {
+      color: #fff;
+      font-size: 18px;
+      max-width: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .close-btn {
+      background: #ff3c5f;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg);
+      background: #ff1f45;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      background: #000;
+    }
+
+    #modal-video {
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Popup iklan */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 20000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.4s;
+    }
+
+    .popup-box {
+      background: linear-gradient(135deg, #1a1a1a, #2a0a0a);
+      padding: 40px;
+      border-radius: 30px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      border: 2px solid #ff3c5f;
+      animation: slideUp 0.4s;
+    }
+
+    .popup-box h2 {
+      color: #ff3c5f;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .popup-box p {
+      color: #ccc;
+      margin: 20px 0 30px;
+      line-height: 1.8;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .popup-buttons button {
+      padding: 14px 35px;
+      border: none;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    .popup-buttons button:first-child {
+      background: #333;
+      color: #fff;
+    }
+
+    .popup-buttons button:last-child {
+      background: #ff3c5f;
+      color: #fff;
+    }
+
+    .popup-buttons button:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* No result */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px;
+      color: #666;
+      font-size: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px;
+      background: #0a0a0a;
+      margin-top: 50px;
+      border-top: 1px solid #333;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔞 NIGHT PLAY</h1>
+  <p>Premium Dewasa Streaming • 100% Gratis • 18+ Only</p>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Cari video hot... (contoh: bokep, tante, abg)" value="">
+      <button onclick="searchVideos()">🔍 Cari</button>
+    </div>
+    
+    <div class="filters">
+      <div class="category-filter" id="category-filter">
+        <!-- Kategori akan diisi JS -->
+      </div>
+      
+      <select id="sort-select" class="sort-select" onchange="filterAndSortVideos()">
+        <option value="newest">Terbaru</option>
+        <option value="popular">Terpopuler</option>
+        <option value="views">Views Tertinggi</option>
+        <option value="longest">Durasi Terlama</option>
+        <option value="shortest">Durasi Terpendek</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="result-count" id="result-count">Menampilkan <span>20</span> video</div>
+  <div class="clear-filter" id="clear-filter" style="display: none;">
+    <button onclick="clearAllFilters()" style="background: none; border: none; color: #ff3c5f; cursor: pointer; text-decoration: underline;">✕ Hapus filter</button>
+  </div>
+</div>
+
+<!-- Grid Video -->
+<div id="video-grid" class="video-grid">
+  <div class="loading">Memuat video...</div>
+</div>
+
+<!-- Modal Video -->
+<div id="video-modal" class="video-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modal-title">Judul Video</h3>
+      <button class="close-btn" onclick="closeVideoModal()">✕</button>
+    </div>
+    <div class="video-container">
+      <video id="modal-video" controls muted>
+        <source src="" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Iklan -->
+<div id="popup-overlay" class="popup-overlay">
+  <div class="popup-box">
+    <h2>🔞 KONFIRMASI</h2>
+    <p>Anda akan diarahkan ke halaman partner. Setelah itu video akan dilanjutkan.</p>
+    <div class="popup-buttons">
+      <button onclick="closeAgePopup()">BATAL</button>
+      <button onclick="goToAdAndPlay()">LANJUTKAN</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script Adsterra -->
+<script src="https://whistlemiddletrains.com/2f/45/05/2f4505cedf0844623137307eb9820be9.js"></script>
+<script src="https://whistlemiddletrains.com/c8/dc/c0/c8dcc093defa333580d99b343b656b40.js"></script>
+
+<script>
+  // Data video lengkap dengan kategori
+  const videoList = [
+    {
+      id: 1,
+      title: "Tante Montok Hot - Part 1",
+      duration: "12:34",
+      durationSec: 754,
+      views: 125000,
+      viewsFormatted: "125K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773209.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "tante",
+      quality: "HD",
+      date: "2026-02-15",
+      tags: ["tante", "montok", "hot"]
+    },
+    {
+      id: 2,
+      title: "ABG Sange - Koleksi Terbaru",
+      duration: "08:22",
+      durationSec: 502,
+      views: 89000,
+      viewsFormatted: "89K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773210.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "abg",
+      quality: "FHD",
+      date: "2026-02-18",
+      tags: ["abg", "sange", "muda"]
+    },
+    {
+      id: 3,
+      title: "Bokep Indo Viral - Full Durasi",
+      duration: "15:47",
+      durationSec: 947,
+      views: 234000,
+      viewsFormatted: "234K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773211.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "bokep",
+      quality: "HD",
+      date: "2026-02-10",
+      tags: ["bokep", "indo", "viral"]
+    },
+    {
+      id: 4,
+      title: "Jav Tanpa Sensor - Mulus",
+      duration: "06:18",
+      durationSec: 378,
+      views: 67000,
+      viewsFormatted: "67K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773212.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "jav",
+      quality: "FHD",
+      date: "2026-02-05",
+      tags: ["jav", "jepang", "uncen"]
+    },
+    {
+      id: 5,
+      title: "Tante vs ABG - Saling Sange",
+      duration: "21:05",
+      durationSec: 1265,
+      views: 312000,
+      viewsFormatted: "312K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773213.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "tante",
+      quality: "HD",
+      date: "2026-02-20",
+      tags: ["tante", "abg", "hot"]
+    },
+    {
+      id: 6,
+      title: "Bokep Korea - Hot Scene",
+      duration: "09:33",
+      durationSec: 573,
+      views: 156000,
+      viewsFormatted: "156K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773214.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "bokep",
+      quality: "4K",
+      date: "2026-02-12",
+      tags: ["korea", "bokep", "asian"]
+    },
+    {
+      id: 7,
+      title: "ABG Bandung - Viral Tiktok",
+      duration: "14:29",
+      durationSec: 869,
+      views: 98000,
+      viewsFormatted: "98K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773215.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "abg",
+      quality: "HD",
+      date: "2026-02-19",
+      tags: ["abg", "bandung", "viral"]
+    },
+    {
+      id: 8,
+      title: "JAV Terbaru 2026 - Hitomi",
+      duration: "11:42",
+      durationSec: 702,
+      views: 203000,
+      viewsFormatted: "203K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773216.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "jav",
+      quality: "FHD",
+      date: "2026-02-21",
+      tags: ["jav", "hitomi", "jepang"]
+    },
+    {
+      id: 9,
+      title: "Tante Warga - Koleksi Pribadi",
+      duration: "18:23",
+      durationSec: 1103,
+      views: 445000,
+      viewsFormatted: "445K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773209.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "tante",
+      quality: "HD",
+      date: "2026-02-14",
+      tags: ["tante", "warga", "hot"]
+    },
+    {
+      id: 10,
+      title: "Bokep ABG - Sange Pagi",
+      duration: "07:15",
+      durationSec: 435,
+      views: 78000,
+      viewsFormatted: "78K",
+      thumbnail: "https://img.freepik.com/free-photo/close-up-people-enjoying-music_23-2151773210.jpg",
+      videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
+      category: "abg",
+      quality: "HD",
+      date: "2026-02-17",
+      tags: ["abg", "sange", "pagi"]
+    }
+  ];
+
+  // Kategori unik dari data
+  const categories = [...new Set(videoList.map(v => v.category))];
+  
+  let currentVideo = null;
+  let popupTimer = null;
+  let popupShown = false;
+  let filteredVideos = [...videoList];
+  let activeCategory = 'all';
+  let searchQuery = '';
+
+  // Inisialisasi
+  document.addEventListener('DOMContentLoaded', function() {
+    loadCategoryButtons();
+    loadVideoGrid(videoList);
+    updateResultCount(videoList.length);
+    
+    const modalVideo = document.getElementById('modal-video');
+    
+    // Event untuk popup saat video diputar
+    modalVideo.addEventListener('play', function() {
+      if (!popupShown && currentVideo) {
+        if (popupTimer) clearTimeout(popupTimer);
+        popupTimer = setTimeout(() => {
+          if (!popupShown && !modalVideo.paused && document.getElementById('video-modal').style.display === 'flex') {
+            modalVideo.pause();
+            document.getElementById('popup-overlay').style.display = 'flex';
+            popupShown = true;
+          }
+        }, 5000);
+      }
+    });
+
+    // Event untuk search dengan enter
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchVideos();
+      }
+    });
+
+    // Tutup modal dengan ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeVideoModal();
+      }
+    });
+  });
+
+  // Load kategori buttons
+  function loadCategoryButtons() {
+    const filterDiv = document.getElementById('category-filter');
+    filterDiv.innerHTML = `
+      <button class="category-btn active" onclick="filterByCategory('all')">Semua</button>
+      ${categories.map(cat => `
+        <button class="category-btn" onclick="filterByCategory('${cat}')">${cat.toUpperCase()}</button>
+      `).join('')}
+    `;
+  }
+
+  // Filter by category
+  function filterByCategory(category) {
+    activeCategory = category;
+    
+    // Update active class
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    filterAndSortVideos();
+  }
+
+  // Search videos
+  function searchVideos() {
+    searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+    filterAndSortVideos();
+  }
+
+  // Filter dan sortir
+  function filterAndSortVideos() {
+    // Filter berdasarkan kategori dan search
+    filteredVideos = videoList.filter(video => {
+      // Filter kategori
+      if (activeCategory !== 'all' && video.category !== activeCategory) {
+        return false;
+      }
+      
+      // Filter search
+      if (searchQuery) {
+        return video.title.toLowerCase().includes(searchQuery) ||
+               video.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
+               video.category.toLowerCase().includes(searchQuery);
+      }
+      
+      return true;
+    });
+
+    // Sortir
+    const sortBy = document.getElementById('sort-select').value;
+    
+    switch(sortBy) {
+      case 'newest':
+        filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      case 'popular':
+        filteredVideos.sort((a, b) => b.views - a.views);
+        break;
+      case 'views':
+        filteredVideos.sort((a, b) => b.views - a.views);
+        break;
+      case 'longest':
+        filteredVideos.sort((a, b) => b.durationSec - a.durationSec);
+        break;
+      case 'shortest':
+        filteredVideos.sort((a, b) => a.durationSec - b.durationSec);
+        break;
+    }
+
+    // Update tampilan
+    loadVideoGrid(filteredVideos);
+    updateResultCount(filteredVideos.length);
+    
+    // Tampilkan tombol clear filter jika ada filter aktif
+    const clearBtn = document.getElementById('clear-filter');
+    if (activeCategory !== 'all' || searchQuery) {
+      clearBtn.style.display = 'block';
+    } else {
+      clearBtn.style.display = 'none';
+    }
+  }
+
+  // Clear semua filter
+  function clearAllFilters() {
+    activeCategory = 'all';
+    searchQuery = '';
+    document.getElementById('search-input').value = '';
+    document.getElementById('sort-select').value = 'newest';
+    
+    // Reset active class di kategori
+    document.querySelectorAll('.category-btn').forEach((btn, index) => {
+      if (index === 0) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    
+    filterAndSortVideos();
+  }
+
+  // Update result count
+  function updateResultCount(count) {
+    document.getElementById('result-count').innerHTML = `Menampilkan <span>${count}</span> video`;
+  }
+
+  // Load video grid
+  function loadVideoGrid(videos) {
+    const grid = document.getElementById('video-grid');
+    
+    if (videos.length === 0) {
+      grid.innerHTML = '<div class="no-results">❌ Tidak ada video ditemukan</div>';
+      return;
+    }
+    
+    grid.innerHTML = videos.map(video => `
+      <div class="video-card" onclick="openVideo(${JSON.stringify(video).replace(/"/g, '&quot;')})">
+        <div class="thumbnail-container">
+          <img class="thumbnail" src="${video.thumbnail}" alt="${video.title}" loading="lazy">
+          <span class="quality-badge">${video.quality}</span>
+          <span class="duration">${video.duration}</span>
+        </div>
+        <div class="video-info">
+          <div class="video-title">${video.title}</div>
+          <div class="video-meta">
+            <span class="views">👁️ ${video.viewsFormatted}</span>
+            <span class="category-tag">${video.category}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Buka video
+  function openVideo(video) {
+    currentVideo = video;
+    popupShown = false;
+    
+    const modal = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalTitle = document.getElementById('modal-title');
+    
+    modalTitle.textContent = video.title;
+    modalVideo.src = video.videoUrl;
+    
+    modal.style.display = 'flex';
+    modalVideo.play().catch(e => console.log('Autoplay dicegah'));
+    
+    if (popupTimer) clearTimeout(popupTimer);
+  }
+
+  // Tutup modal
+  function closeVideoModal() {
+    const modal = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('modal-video');
+    
+    modalVideo.pause();
+    modalVideo.src = '';
+    modal.style.display = 'none';
+    
+    if (popupTimer) {
+      clearTimeout(popupTimer);
+      popupTimer = null;
+    }
+    
+    document.getElementById('popup-overlay').style.display = 'none';
+  }
+
+  // Tutup popup
+  function closeAgePopup() {
+    document.getElementById('popup-overlay').style.display = 'none';
+  }
+
+  // Lanjut ke iklan
+  function goToAdAndPlay() {
+    window.open('https://www.effectivegatecpm.com/q2imp5n2si?key=be55f8eebf062a8a0e227ce8a7491975', '_blank');
+    
+    document.getElementById('popup-overlay').style.display = 'none';
+    
+    const modalVideo = document.getElementById('modal-video');
+    modalVideo.play().catch(e => console.log('Gagal play:', e));
+  }
+</script>
+
+<div class="footer">
+  <p>⚠️ Semua konten hanya untuk usia 18+ • Dilarang keras mendistribusikan</p>
+  <p>© 2026 Night Play • Hak cipta dilindungi undang-undang</p>
+</div>
+
+</body>
+</html>
