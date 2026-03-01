@@ -227,6 +227,7 @@
       font-size: 10px;
       font-weight: bold;
       letter-spacing: 0.5px;
+      z-index: 2;
     }
 
     .duration {
@@ -240,6 +241,7 @@
       font-size: 11px;
       font-weight: bold;
       backdrop-filter: blur(2px);
+      z-index: 2;
     }
 
     .video-info {
@@ -461,6 +463,20 @@
     .hidden-canvas {
       display: none;
     }
+
+    .duration-loading {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      backdrop-filter: blur(2px);
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -532,8 +548,8 @@
   </div>
 </div>
 
-<!-- Hidden video untuk generate thumbnail -->
-<video id="thumbnail-generator" class="hidden-canvas" crossorigin="anonymous" muted preload="auto"></video>
+<!-- Hidden video untuk generate thumbnail dan baca durasi -->
+<video id="thumbnail-generator" class="hidden-canvas" crossorigin="anonymous" muted preload="metadata"></video>
 <canvas id="thumbnail-canvas" class="hidden-canvas" width="320" height="180"></canvas>
 
 <!-- Script Adsterra -->
@@ -546,8 +562,6 @@
     {
       id: 1,
       title: "Tante Montok Hot - Part 1",
-      duration: "12:34",
-      durationSec: 754,
       views: 125000,
       viewsFormatted: "125K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -555,13 +569,13 @@
       quality: "HD",
       date: "2026-02-15",
       tags: ["tante", "montok", "hot"],
-      thumbnailTime: 5 // Ambil frame detik ke-5
+      thumbnailTime: 5, // Ambil frame detik ke-5
+      duration: "00:00", // Sementara
+      durationSec: 0
     },
     {
       id: 2,
       title: "ABG Sange - Koleksi Terbaru",
-      duration: "08:22",
-      durationSec: 502,
       views: 89000,
       viewsFormatted: "89K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -569,13 +583,13 @@
       quality: "FHD",
       date: "2026-02-18",
       tags: ["abg", "sange", "muda"],
-      thumbnailTime: 3
+      thumbnailTime: 3,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 3,
       title: "Bokep Indo Viral - Full Durasi",
-      duration: "15:47",
-      durationSec: 947,
       views: 234000,
       viewsFormatted: "234K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -583,13 +597,13 @@
       quality: "HD",
       date: "2026-02-10",
       tags: ["bokep", "indo", "viral"],
-      thumbnailTime: 7
+      thumbnailTime: 7,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 4,
       title: "Jav Tanpa Sensor - Mulus",
-      duration: "06:18",
-      durationSec: 378,
       views: 67000,
       viewsFormatted: "67K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -597,13 +611,13 @@
       quality: "FHD",
       date: "2026-02-05",
       tags: ["jav", "jepang", "uncen"],
-      thumbnailTime: 2
+      thumbnailTime: 2,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 5,
       title: "Tante vs ABG - Saling Sange",
-      duration: "21:05",
-      durationSec: 1265,
       views: 312000,
       viewsFormatted: "312K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -611,13 +625,13 @@
       quality: "HD",
       date: "2026-02-20",
       tags: ["tante", "abg", "hot"],
-      thumbnailTime: 8
+      thumbnailTime: 8,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 6,
       title: "Bokep Korea - Hot Scene",
-      duration: "09:33",
-      durationSec: 573,
       views: 156000,
       viewsFormatted: "156K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -625,13 +639,13 @@
       quality: "4K",
       date: "2026-02-12",
       tags: ["korea", "bokep", "asian"],
-      thumbnailTime: 4
+      thumbnailTime: 4,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 7,
       title: "ABG Bandung - Viral Tiktok",
-      duration: "14:29",
-      durationSec: 869,
       views: 98000,
       viewsFormatted: "98K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -639,13 +653,13 @@
       quality: "HD",
       date: "2026-02-19",
       tags: ["abg", "bandung", "viral"],
-      thumbnailTime: 5
+      thumbnailTime: 5,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 8,
       title: "JAV Terbaru 2026 - Hitomi",
-      duration: "11:42",
-      durationSec: 702,
       views: 203000,
       viewsFormatted: "203K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -653,13 +667,13 @@
       quality: "FHD",
       date: "2026-02-21",
       tags: ["jav", "hitomi", "jepang"],
-      thumbnailTime: 6
+      thumbnailTime: 6,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 9,
       title: "Tante Warga - Koleksi Pribadi",
-      duration: "18:23",
-      durationSec: 1103,
       views: 445000,
       viewsFormatted: "445K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -667,13 +681,13 @@
       quality: "HD",
       date: "2026-02-14",
       tags: ["tante", "warga", "hot"],
-      thumbnailTime: 9
+      thumbnailTime: 9,
+      duration: "00:00",
+      durationSec: 0
     },
     {
       id: 10,
       title: "Bokep ABG - Sange Pagi",
-      duration: "07:15",
-      durationSec: 435,
       views: 78000,
       viewsFormatted: "78K",
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
@@ -681,7 +695,9 @@
       quality: "HD",
       date: "2026-02-17",
       tags: ["abg", "sange", "pagi"],
-      thumbnailTime: 3
+      thumbnailTime: 3,
+      duration: "00:00",
+      durationSec: 0
     }
   ];
 
@@ -702,6 +718,8 @@
 
   // Cache thumbnail yang sudah digenerate
   const thumbnailCache = new Map();
+  // Cache durasi video
+  const durationCache = new Map();
 
   // Inisialisasi
   document.addEventListener('DOMContentLoaded', function() {
@@ -739,9 +757,58 @@
       }
     });
 
-    // Generate thumbnail untuk semua video
-    generateAllThumbnails();
+    // Generate thumbnail dan baca durasi untuk semua video
+    loadAllVideoMetadata();
   });
+
+  // Fungsi untuk mengkonversi detik ke format MM:SS
+  function formatDuration(seconds) {
+    if (!seconds || isNaN(seconds)) return "00:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  // Baca durasi video
+  async function getVideoDuration(videoUrl) {
+    // Cek cache dulu
+    if (durationCache.has(videoUrl)) {
+      return durationCache.get(videoUrl);
+    }
+
+    return new Promise((resolve, reject) => {
+      // Buat video element sementara
+      const tempVideo = document.createElement('video');
+      tempVideo.preload = 'metadata';
+      tempVideo.src = videoUrl;
+      tempVideo.muted = true;
+      tempVideo.crossOrigin = "anonymous";
+      
+      const onLoadedMetadata = () => {
+        const duration = tempVideo.duration;
+        
+        // Simpan ke cache
+        durationCache.set(videoUrl, duration);
+        
+        // Bersihkan
+        tempVideo.removeEventListener('loadedmetadata', onLoadedMetadata);
+        tempVideo.removeEventListener('error', onError);
+        tempVideo.src = '';
+        tempVideo.load();
+        
+        resolve(duration);
+      };
+      
+      const onError = (error) => {
+        tempVideo.removeEventListener('loadedmetadata', onLoadedMetadata);
+        tempVideo.removeEventListener('error', onError);
+        reject(error);
+      };
+      
+      tempVideo.addEventListener('loadedmetadata', onLoadedMetadata);
+      tempVideo.addEventListener('error', onError);
+    });
+  }
 
   // Generate thumbnail dari video
   async function generateThumbnail(videoUrl, timeInSeconds = 5) {
@@ -793,23 +860,29 @@
     });
   }
 
-  // Generate thumbnail untuk semua video
-  async function generateAllThumbnails() {
-    const promises = videoList.map(video => 
-      generateThumbnail(video.videoUrl, video.thumbnailTime || 5)
-        .then(thumbnailUrl => {
-          video.generatedThumbnail = thumbnailUrl;
-        })
-        .catch(error => {
-          console.error(`Gagal generate thumbnail untuk ${video.title}:`, error);
-          // Gunakan thumbnail default jika gagal
-          video.generatedThumbnail = 'https://via.placeholder.com/320x180/1a1a1a/ff3c5f?text=No+Preview';
-        })
-    );
+  // Load metadata untuk semua video (thumbnail + durasi)
+  async function loadAllVideoMetadata() {
+    const promises = videoList.map(async video => {
+      try {
+        // Baca durasi
+        const durationSec = await getVideoDuration(video.videoUrl);
+        video.durationSec = durationSec;
+        video.duration = formatDuration(durationSec);
+        
+        // Generate thumbnail
+        const thumbnailUrl = await generateThumbnail(video.videoUrl, video.thumbnailTime || 5);
+        video.generatedThumbnail = thumbnailUrl;
+      } catch (error) {
+        console.error(`Gagal load metadata untuk ${video.title}:`, error);
+        video.duration = "00:00";
+        video.durationSec = 0;
+        video.generatedThumbnail = 'https://via.placeholder.com/320x180/1a1a1a/ff3c5f?text=No+Preview';
+      }
+    });
     
     await Promise.all(promises);
     
-    // Reload grid dengan thumbnail yang sudah digenerate
+    // Reload grid dengan metadata yang sudah didapat
     filterAndSortVideos();
   }
 
@@ -870,8 +943,6 @@
         filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
       case 'popular':
-        filteredVideos.sort((a, b) => b.views - a.views);
-        break;
       case 'views':
         filteredVideos.sort((a, b) => b.views - a.views);
         break;
@@ -931,13 +1002,14 @@
     
     grid.innerHTML = videos.map(video => {
       const thumbnailSrc = video.generatedThumbnail || 'https://via.placeholder.com/320x180/1a1a1a/ff3c5f?text=Loading...';
+      const duration = video.duration || "00:00";
       
       return `
         <div class="video-card" onclick="openVideo(${JSON.stringify(video).replace(/"/g, '&quot;')})">
           <div class="thumbnail-container">
             <img class="thumbnail" src="${thumbnailSrc}" alt="${video.title}" loading="lazy">
             <span class="quality-badge">${video.quality}</span>
-            <span class="duration">${video.duration}</span>
+            <span class="duration">${duration}</span>
           </div>
           <div class="video-info">
             <div class="video-title">${video.title}</div>
@@ -1009,4 +1081,3 @@
 
 </body>
 </html>
-
