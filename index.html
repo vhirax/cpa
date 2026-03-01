@@ -17,7 +17,6 @@
       color: #fff;
     }
 
-    /* Header dengan gradient */
     .header {
       background: linear-gradient(135deg, #1a1a1a 0%, #2a0a0a 100%);
       padding: 30px 20px;
@@ -42,7 +41,6 @@
       font-size: 16px;
     }
 
-    /* Navigasi dan search */
     .nav-bar {
       background: #1a1a1a;
       padding: 15px 20px;
@@ -108,7 +106,6 @@
       box-shadow: 0 5px 15px rgba(255, 60, 95, 0.4);
     }
 
-    /* Filter dan kategori */
     .filters {
       display: flex;
       flex-wrap: wrap;
@@ -160,7 +157,6 @@
       border-color: #ff3c5f;
     }
 
-    /* Stats */
     .stats-bar {
       max-width: 1400px;
       margin: 20px auto;
@@ -176,7 +172,6 @@
       font-weight: bold;
     }
 
-    /* Grid Video */
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -186,7 +181,6 @@
       margin: 0 auto;
     }
 
-    /* Card video dengan efek modern */
     .video-card {
       background: #1a1a1a;
       border-radius: 12px;
@@ -211,19 +205,17 @@
       background: #000;
     }
 
-    .thumbnail-video {
+    .thumbnail {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.6s;
-      pointer-events: none; /* Mencegah interaksi langsung dengan video */
     }
 
-    .video-card:hover .thumbnail-video {
+    .video-card:hover .thumbnail {
       transform: scale(1.15);
     }
 
-    /* Badge kualitas */
     .quality-badge {
       position: absolute;
       top: 8px;
@@ -235,7 +227,6 @@
       font-size: 10px;
       font-weight: bold;
       letter-spacing: 0.5px;
-      z-index: 2;
     }
 
     .duration {
@@ -249,7 +240,6 @@
       font-size: 11px;
       font-weight: bold;
       backdrop-filter: blur(2px);
-      z-index: 2;
     }
 
     .video-info {
@@ -296,7 +286,6 @@
       display: inline-block;
     }
 
-    /* Modal Pemutar Video */
     .video-modal {
       display: none;
       position: fixed;
@@ -374,7 +363,6 @@
       margin: 0 auto;
     }
 
-    /* Popup iklan */
     .popup-overlay {
       display: none;
       position: fixed;
@@ -453,7 +441,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* No result */
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
@@ -469,6 +456,10 @@
       margin-top: 50px;
       border-top: 1px solid #333;
       color: #666;
+    }
+
+    .hidden-canvas {
+      display: none;
     }
   </style>
 </head>
@@ -541,12 +532,16 @@
   </div>
 </div>
 
+<!-- Hidden video untuk generate thumbnail -->
+<video id="thumbnail-generator" class="hidden-canvas" crossorigin="anonymous" muted preload="auto"></video>
+<canvas id="thumbnail-canvas" class="hidden-canvas" width="320" height="180"></canvas>
+
 <!-- Script Adsterra -->
 <script src="https://whistlemiddletrains.com/2f/45/05/2f4505cedf0844623137307eb9820be9.js"></script>
 <script src="https://whistlemiddletrains.com/c8/dc/c0/c8dcc093defa333580d99b343b656b40.js"></script>
 
 <script>
-  // Data video lengkap dengan kategori dan video thumbnail
+  // Data video lengkap dengan kategori
   const videoList = [
     {
       id: 1,
@@ -555,12 +550,12 @@
       durationSec: 754,
       views: 125000,
       viewsFormatted: "125K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "tante",
       quality: "HD",
       date: "2026-02-15",
-      tags: ["tante", "montok", "hot"]
+      tags: ["tante", "montok", "hot"],
+      thumbnailTime: 5 // Ambil frame detik ke-5
     },
     {
       id: 2,
@@ -569,12 +564,12 @@
       durationSec: 502,
       views: 89000,
       viewsFormatted: "89K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "abg",
       quality: "FHD",
       date: "2026-02-18",
-      tags: ["abg", "sange", "muda"]
+      tags: ["abg", "sange", "muda"],
+      thumbnailTime: 3
     },
     {
       id: 3,
@@ -583,12 +578,12 @@
       durationSec: 947,
       views: 234000,
       viewsFormatted: "234K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "bokep",
       quality: "HD",
       date: "2026-02-10",
-      tags: ["bokep", "indo", "viral"]
+      tags: ["bokep", "indo", "viral"],
+      thumbnailTime: 7
     },
     {
       id: 4,
@@ -597,12 +592,12 @@
       durationSec: 378,
       views: 67000,
       viewsFormatted: "67K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "jav",
       quality: "FHD",
       date: "2026-02-05",
-      tags: ["jav", "jepang", "uncen"]
+      tags: ["jav", "jepang", "uncen"],
+      thumbnailTime: 2
     },
     {
       id: 5,
@@ -611,12 +606,12 @@
       durationSec: 1265,
       views: 312000,
       viewsFormatted: "312K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "tante",
       quality: "HD",
       date: "2026-02-20",
-      tags: ["tante", "abg", "hot"]
+      tags: ["tante", "abg", "hot"],
+      thumbnailTime: 8
     },
     {
       id: 6,
@@ -625,12 +620,12 @@
       durationSec: 573,
       views: 156000,
       viewsFormatted: "156K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "bokep",
       quality: "4K",
       date: "2026-02-12",
-      tags: ["korea", "bokep", "asian"]
+      tags: ["korea", "bokep", "asian"],
+      thumbnailTime: 4
     },
     {
       id: 7,
@@ -639,12 +634,12 @@
       durationSec: 869,
       views: 98000,
       viewsFormatted: "98K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "abg",
       quality: "HD",
       date: "2026-02-19",
-      tags: ["abg", "bandung", "viral"]
+      tags: ["abg", "bandung", "viral"],
+      thumbnailTime: 5
     },
     {
       id: 8,
@@ -653,12 +648,12 @@
       durationSec: 702,
       views: 203000,
       viewsFormatted: "203K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "jav",
       quality: "FHD",
       date: "2026-02-21",
-      tags: ["jav", "hitomi", "jepang"]
+      tags: ["jav", "hitomi", "jepang"],
+      thumbnailTime: 6
     },
     {
       id: 9,
@@ -667,12 +662,12 @@
       durationSec: 1103,
       views: 445000,
       viewsFormatted: "445K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "tante",
       quality: "HD",
       date: "2026-02-14",
-      tags: ["tante", "warga", "hot"]
+      tags: ["tante", "warga", "hot"],
+      thumbnailTime: 9
     },
     {
       id: 10,
@@ -681,12 +676,12 @@
       durationSec: 435,
       views: 78000,
       viewsFormatted: "78K",
-      thumbnail: "https://files.catbox.moe/ehdgsy.mp4", // Menggunakan video sebagai thumbnail
       videoUrl: "https://files.catbox.moe/ehdgsy.mp4",
       category: "abg",
       quality: "HD",
       date: "2026-02-17",
-      tags: ["abg", "sange", "pagi"]
+      tags: ["abg", "sange", "pagi"],
+      thumbnailTime: 3
     }
   ];
 
@@ -699,6 +694,14 @@
   let filteredVideos = [...videoList];
   let activeCategory = 'all';
   let searchQuery = '';
+
+  // Elemen untuk generate thumbnail
+  const hiddenVideo = document.getElementById('thumbnail-generator');
+  const hiddenCanvas = document.getElementById('thumbnail-canvas');
+  const ctx = hiddenCanvas.getContext('2d');
+
+  // Cache thumbnail yang sudah digenerate
+  const thumbnailCache = new Map();
 
   // Inisialisasi
   document.addEventListener('DOMContentLoaded', function() {
@@ -736,23 +739,78 @@
       }
     });
 
-    // Inisialisasi video thumbnail
-    initVideoThumbnails();
+    // Generate thumbnail untuk semua video
+    generateAllThumbnails();
   });
 
-  // Inisialisasi video thumbnail (dijalankan setiap kali grid diupdate)
-  function initVideoThumbnails() {
-    setTimeout(() => {
-      const thumbnails = document.querySelectorAll('.thumbnail-video');
-      thumbnails.forEach(video => {
-        video.play().catch(e => console.log('Autoplay thumbnail dicegah'));
+  // Generate thumbnail dari video
+  async function generateThumbnail(videoUrl, timeInSeconds = 5) {
+    // Cek cache dulu
+    if (thumbnailCache.has(videoUrl)) {
+      return thumbnailCache.get(videoUrl);
+    }
+
+    return new Promise((resolve, reject) => {
+      // Set video source
+      hiddenVideo.src = videoUrl;
+      hiddenVideo.crossOrigin = "anonymous";
+      hiddenVideo.currentTime = timeInSeconds;
+      
+      // Fungsi saat video siap
+      const onSeeked = () => {
+        // Gambar frame ke canvas
+        ctx.drawImage(hiddenVideo, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
         
-        // Loop video
-        video.addEventListener('ended', function() {
-          this.play();
-        });
-      });
-    }, 100);
+        // Konversi ke data URL
+        const thumbnailDataUrl = hiddenCanvas.toDataURL('image/jpeg', 0.8);
+        
+        // Simpan ke cache
+        thumbnailCache.set(videoUrl, thumbnailDataUrl);
+        
+        // Bersihkan event listener
+        hiddenVideo.removeEventListener('seeked', onSeeked);
+        hiddenVideo.removeEventListener('error', onError);
+        
+        // Hentikan video
+        hiddenVideo.pause();
+        hiddenVideo.src = '';
+        hiddenVideo.load();
+        
+        resolve(thumbnailDataUrl);
+      };
+      
+      const onError = (error) => {
+        hiddenVideo.removeEventListener('seeked', onSeeked);
+        hiddenVideo.removeEventListener('error', onError);
+        reject(error);
+      };
+      
+      hiddenVideo.addEventListener('seeked', onSeeked);
+      hiddenVideo.addEventListener('error', onError);
+      
+      // Load video
+      hiddenVideo.load();
+    });
+  }
+
+  // Generate thumbnail untuk semua video
+  async function generateAllThumbnails() {
+    const promises = videoList.map(video => 
+      generateThumbnail(video.videoUrl, video.thumbnailTime || 5)
+        .then(thumbnailUrl => {
+          video.generatedThumbnail = thumbnailUrl;
+        })
+        .catch(error => {
+          console.error(`Gagal generate thumbnail untuk ${video.title}:`, error);
+          // Gunakan thumbnail default jika gagal
+          video.generatedThumbnail = 'https://via.placeholder.com/320x180/1a1a1a/ff3c5f?text=No+Preview';
+        })
+    );
+    
+    await Promise.all(promises);
+    
+    // Reload grid dengan thumbnail yang sudah digenerate
+    filterAndSortVideos();
   }
 
   // Load kategori buttons
@@ -871,25 +929,26 @@
       return;
     }
     
-    grid.innerHTML = videos.map(video => `
-      <div class="video-card" onclick="openVideo(${JSON.stringify(video).replace(/"/g, '&quot;')})">
-        <div class="thumbnail-container">
-          <video class="thumbnail-video" src="${video.thumbnail}" muted loop playsinline preload="auto"></video>
-          <span class="quality-badge">${video.quality}</span>
-          <span class="duration">${video.duration}</span>
-        </div>
-        <div class="video-info">
-          <div class="video-title">${video.title}</div>
-          <div class="video-meta">
-            <span class="views">👁️ ${video.viewsFormatted}</span>
-            <span class="category-tag">${video.category}</span>
+    grid.innerHTML = videos.map(video => {
+      const thumbnailSrc = video.generatedThumbnail || 'https://via.placeholder.com/320x180/1a1a1a/ff3c5f?text=Loading...';
+      
+      return `
+        <div class="video-card" onclick="openVideo(${JSON.stringify(video).replace(/"/g, '&quot;')})">
+          <div class="thumbnail-container">
+            <img class="thumbnail" src="${thumbnailSrc}" alt="${video.title}" loading="lazy">
+            <span class="quality-badge">${video.quality}</span>
+            <span class="duration">${video.duration}</span>
+          </div>
+          <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            <div class="video-meta">
+              <span class="views">👁️ ${video.viewsFormatted}</span>
+              <span class="category-tag">${video.category}</span>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
-    
-    // Inisialisasi video thumbnail setelah grid di-load
-    initVideoThumbnails();
+      `;
+    }).join('');
   }
 
   // Buka video
@@ -950,3 +1009,4 @@
 
 </body>
 </html>
+
